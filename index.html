@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <style>
+      body {
+        font-family: "Helvetica Neue", helvetica, arial;
+        padding: 15px;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      ul li {
+        line-height: 1.4;
+      }
+    </style>
+
+  </head>
+  <body>
+    <h1>Pings</h1>
+    <p id='note'></p>
+    <ul id='messages' style="color: red"></ul>
+    <ul id='pings'></ul>
+    <script>
+      var host = location.origin.replace(/^http/, 'ws')
+      // todo: openshift requires 8000 port
+      var parser = document.createElement('a');
+      parser.href = host;
+      var wsHost = host;
+      var openshiftNote = '';
+      if (parser.port == 80 || parser.port == ''){
+        //wsHost = parser.protocol+"//"+parser.hostname+":5000";
+        wsHost = "ws://localhost:5000";
+		openshiftNote = " (using OpenShift port) ";
+      }
+      document.getElementById('note').appendChild(
+	document.createTextNode("Using "+wsHost+" for WebSocket connection"+openshiftNote)
+      );
+      var ws = new WebSocket(wsHost);
+      ws.onmessage = function (event) {
+        var li = document.createElement('li');
+        li.innerHTML = JSON.parse(event.data);
+        document.querySelector('#pings').appendChild(li);
+      };
+	ws.onerror = function (event) {
+		var li = document.createElement('li');
+		li.innerHTML = "OnError: event = "+JSON.stringify(event, null, 4);
+		document.querySelector('#messages').appendChild(li);
+       };
+	ws.onclose = function (event) {
+		var li = document.createElement('li');
+		li.innerHTML = "OnClose: event = "+JSON.stringify(event, null, 4);
+		document.querySelector('#messages').appendChild(li);
+	}
+    </script>
+  </body>
+</html>
