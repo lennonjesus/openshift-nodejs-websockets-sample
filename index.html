@@ -28,11 +28,12 @@
       parser.href = host;
       var wsHost = host;
       var openshiftNote = '';
-      if (parser.port == 80 || parser.port == ''){
+      //if (parser.port == 80 || parser.port == ''){
         //wsHost = parser.protocol+"//"+parser.hostname+":5000";
-        wsHost = "ws://localhost:5000";
-		openshiftNote = " (using OpenShift port) ";
-      }
+        //wsHost = "ws://localhost:5000";
+        wsHost = 'ws://nodejs-ws-sample.gsi-sandbox.devcloud.mprj.mp.br:30002';
+		    openshiftNote = " (using OpenShift port) ";
+      //}
       document.getElementById('note').appendChild(
 	document.createTextNode("Using "+wsHost+" for WebSocket connection"+openshiftNote)
       );

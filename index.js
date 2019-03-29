@@ -5,18 +5,17 @@ const http = require("http")
 const express = require("express")
 const app = express()
 
-const ipaddress   = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 const port        = process.env.OPENSHIFT_NODEJS_PORT || 5000;
 const isOpenShift = process.env.OPENSHIFT_NODEJS_PORT ? true : false;
 
 app.use(express.static(__dirname + "/"))
 
-console.log(`IP: ${ipaddress} Port: ${port} ${isOpenShift ? "OepnShift mode" : "Standalone mode"}`);
+console.log(`Port: ${port} ${isOpenShift ? "OepnShift mode" : "Standalone mode"}`);
 
 const server = http.createServer(app)
-server.listen(port,ipaddress)
+server.listen(port)
 
-console.log(`http server listening on ${ipaddress}:${port}`)
+console.log(`http server listening on ${port}`)
 
 const wss = new WebSocketServer({server: server})
 
